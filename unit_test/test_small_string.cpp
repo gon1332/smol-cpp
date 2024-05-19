@@ -10,12 +10,14 @@ TEST(small_string, create)
         small_string<5> s;
         EXPECT_TRUE(s.empty());
         EXPECT_EQ(0, s.length());
+        EXPECT_EQ(0, s.size());
         EXPECT_STREQ("", s.c_str());
     }
     {
         small_string<20> s{"sorry miss jackson"};
         EXPECT_FALSE(s.empty());
         EXPECT_EQ(18, s.length());
+        EXPECT_EQ(18, s.size());
         EXPECT_STREQ("sorry miss jackson", s.c_str());
     }
     {
@@ -23,6 +25,7 @@ TEST(small_string, create)
         small_string<5> c{s};
         EXPECT_FALSE(c.empty());
         EXPECT_EQ(1, c.length());
+        EXPECT_EQ(1, s.size());
         EXPECT_STREQ("a", c.c_str());
     }
 }
@@ -93,4 +96,22 @@ TEST(small_string, compare)
     std::string_view sv2{"a"};
     EXPECT_NE(s1, sv2);
     EXPECT_NE(sv2, s1);
+}
+
+TEST(small_string, element_access)
+{
+    small_string<5> s{"abcde"};
+    EXPECT_EQ('a', *s.begin());
+    EXPECT_EQ('a', s[0]);
+    EXPECT_EQ('b', s[1]);
+    EXPECT_EQ('c', s[2]);
+    EXPECT_EQ('d', s[3]);
+    EXPECT_EQ('e', s[4]);
+    EXPECT_EQ('a', s.front());
+    EXPECT_EQ('e', s.back());
+
+    s.front() = 'e';
+    EXPECT_EQ('e', s.front());
+    s.back() = 'a';
+    EXPECT_EQ('a', s.back());
 }

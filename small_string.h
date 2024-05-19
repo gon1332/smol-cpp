@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <array>
 #include <string_view>
 
 namespace gon
@@ -26,7 +27,23 @@ public:
     [[nodiscard]] auto cend() const -> const_iterator { return m_string.cbegin() + m_length; }
 
     [[nodiscard]] auto empty() const noexcept -> bool { return m_length == 0U; }
-    [[nodiscard]] auto length() const noexcept -> size_type { return m_length; }
+    [[nodiscard]] auto size() const noexcept -> size_type { return m_length; }
+    [[nodiscard]] auto length() const noexcept -> size_type { return size(); }
+
+    auto operator[](size_type pos) -> value_type &
+    {
+        return *(begin() + pos);
+    }
+
+    auto operator[](size_type pos) const -> const value_type &
+    {
+        return *(cbegin() + pos);
+    }
+
+    auto front() -> value_type & { return operator[](0); }
+    auto front() const -> const value_type & { return operator[](0); }
+    auto back() -> value_type & { return operator[](size() - 1); }
+    auto back() const -> const value_type & { return operator[](size() - 1); }
 
     auto c_str() const noexcept -> const value_type *
     {
