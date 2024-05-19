@@ -21,3 +21,7 @@ target_link_libraries(
 
 include(GoogleTest)
 gtest_discover_tests(unit_test)
+
+add_custom_command(TARGET unit_test POST_BUILD
+  COMMAND size --format=berkeley ${CMAKE_CURRENT_BINARY_DIR}/unit_test
+)
