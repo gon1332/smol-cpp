@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <string_view>
 #include "small_string.h"
 
 using namespace gon;
@@ -70,4 +71,26 @@ TEST(small_string, append)
         EXPECT_STREQ("xxxxx", s.c_str());
         EXPECT_EQ(5, s.length());
     }
+}
+
+TEST(small_string, compare)
+{
+    small_string<5> s1{"abc"};
+    small_string<6> s2{"abc"};
+    std::string_view sv{"abc"};
+    EXPECT_EQ(s1, s2);
+    EXPECT_EQ(s2, s1);
+    EXPECT_EQ(s1, "abc");
+    EXPECT_EQ("abc", s1);
+    EXPECT_EQ(s1, sv);
+    EXPECT_EQ(sv, s1);
+
+    small_string<5> s3{"ab"};
+    EXPECT_NE(s1, s3);
+    EXPECT_NE(s3, s1);
+    EXPECT_NE(s1, "ab");
+    EXPECT_NE("ab", s1);
+    std::string_view sv2{"a"};
+    EXPECT_NE(s1, sv2);
+    EXPECT_NE(sv2, s1);
 }
