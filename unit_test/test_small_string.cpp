@@ -74,6 +74,16 @@ TEST(small_string, append)
         EXPECT_STREQ("xxxxx", s.c_str());
         EXPECT_EQ(5, s.length());
     }
+    {
+        small_string<5> s;
+        small_string<2> s1{"ab"};
+        small_string<4> s2{"cdef"};
+        s += s1;
+        EXPECT_EQ("ab", s);
+        s += s2;
+        EXPECT_EQ(5, s.length());
+        EXPECT_EQ("abcde", s);
+    }
 }
 
 TEST(small_string, compare)

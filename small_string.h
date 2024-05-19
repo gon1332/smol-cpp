@@ -50,6 +50,12 @@ public:
         return m_string.data();
     }
 
+    template <std::size_t SizeOther>
+    auto append(const small_string<SizeOther> &s) -> small_string<Size> &
+    {
+        return append(s.c_str());
+    }
+
     auto append(size_type count, value_type ch) -> small_string<Size> &
     {
         for (; count > 0 && m_length < Size; --count, ++m_length) {
@@ -63,6 +69,12 @@ public:
     {
         copy(s);
         return *this;
+    }
+
+    template <std::size_t SizeOther>
+    auto operator+=(const small_string<SizeOther> &s) -> small_string<Size> &
+    {
+        return append(s);
     }
 
     auto operator+=(value_type ch) -> small_string<Size> &
