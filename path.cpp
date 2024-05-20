@@ -1,9 +1,9 @@
 #include "path.h"
 #include <string_view>
 
-namespace gon::filesystem
+namespace smol::filesystem
 {
-path::path(string_type &&p_str) : m_path{p_str} {}
+path::path(string_type &&p_str) : path{p_str} {}
 
 path::path(const value_type *p_str) : m_path{p_str} {}
 
@@ -77,4 +77,4 @@ bool operator!=(const path &p_lhs, const path &p_rhs) noexcept
 {
     return !(p_lhs == p_rhs);
 }
-} // namespace gon
+} // namespace smol

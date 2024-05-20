@@ -1,28 +1,26 @@
 #include <gtest/gtest.h>
 #include <string_view>
-#include "small_string.h"
+#include "smol_string.h"
 
-using namespace gon;
-
-TEST(small_string, create)
+TEST(string, create)
 {
     {
-        small_string<5> str;
+        smol::string<5> str;
         EXPECT_TRUE(str.empty());
         EXPECT_EQ(0, str.length());
         EXPECT_EQ(0, str.size());
         EXPECT_STREQ("", str.c_str());
     }
     {
-        small_string<20> str{"sorry miss jackson"};
+        smol::string<20> str{"sorry miss jackson"};
         EXPECT_FALSE(str.empty());
         EXPECT_EQ(18, str.length());
         EXPECT_EQ(18, str.size());
         EXPECT_STREQ("sorry miss jackson", str.c_str());
     }
     {
-        small_string<5> str{"a"};
-        small_string<5> str2{str};
+        smol::string<5> str{"a"};
+        smol::string<5> str2{str};
         EXPECT_FALSE(str2.empty());
         EXPECT_EQ(1, str2.length());
         EXPECT_EQ(1, str.size());
@@ -30,20 +28,20 @@ TEST(small_string, create)
     }
 }
 
-TEST(small_string, assign)
+TEST(string, assign)
 {
-    small_string<5> str{"abc"};
-    small_string<5> str2{"xyz"};
+    smol::string<5> str{"abc"};
+    smol::string<5> str2{"xyz"};
     str = str2;
     EXPECT_EQ("xyz", str);
     str = "klm";
     EXPECT_EQ("klm", str);
 }
 
-TEST(small_string, append)
+TEST(string, append)
 {
     {
-        small_string<5> str;
+        smol::string<5> str;
         EXPECT_STREQ("", str.c_str());
         EXPECT_EQ(0, str.length());
         str.append("1");
@@ -60,7 +58,7 @@ TEST(small_string, append)
         EXPECT_EQ(5, str.length());
     }
     {
-        small_string<5> str;
+        smol::string<5> str;
         EXPECT_STREQ("", str.c_str());
         EXPECT_EQ(0, str.length());
         str += "1";
@@ -77,7 +75,7 @@ TEST(small_string, append)
         EXPECT_EQ(5, str.length());
     }
     {
-        small_string<5> str;
+        smol::string<5> str;
         EXPECT_STREQ("", str.c_str());
         EXPECT_EQ(0, str.length());
         str.append(7, 'x');
@@ -85,9 +83,9 @@ TEST(small_string, append)
         EXPECT_EQ(5, str.length());
     }
     {
-        small_string<5> str;
-        small_string<2> str1{"ab"};
-        small_string<4> str2{"cdef"};
+        smol::string<5> str;
+        smol::string<2> str1{"ab"};
+        smol::string<4> str2{"cdef"};
         str += str1;
         EXPECT_EQ("ab", str);
         str += str2;
@@ -96,10 +94,10 @@ TEST(small_string, append)
     }
 }
 
-TEST(small_string, compare)
+TEST(string, compare)
 {
-    small_string<5> str1{"abc"};
-    small_string<6> str2{"abc"};
+    smol::string<5> str1{"abc"};
+    smol::string<6> str2{"abc"};
     std::string_view sview{"abc"};
     EXPECT_EQ(str1, str2);
     EXPECT_EQ(str2, str1);
@@ -108,7 +106,7 @@ TEST(small_string, compare)
     EXPECT_EQ(str1, sview);
     EXPECT_EQ(sview, str1);
 
-    small_string<5> str3{"ab"};
+    smol::string<5> str3{"ab"};
     EXPECT_NE(str1, str3);
     EXPECT_NE(str3, str1);
     EXPECT_NE(str1, "ab");
@@ -118,9 +116,9 @@ TEST(small_string, compare)
     EXPECT_NE(sview2, str1);
 }
 
-TEST(small_string, element_access)
+TEST(string, element_access)
 {
-    small_string<5> str{"abcde"};
+    smol::string<5> str{"abcde"};
     EXPECT_EQ('a', *str.begin());
     EXPECT_EQ('a', str[0]);
     EXPECT_EQ('b', str[1]);

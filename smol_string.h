@@ -5,10 +5,10 @@
 #include <iterator>
 #include <string_view>
 
-namespace gon
+namespace smol
 {
 template <std::size_t Size>
-class small_string
+class string
 {
 public:
     using value_type = char;
@@ -17,18 +17,18 @@ public:
     using iterator = typename buffer_type::iterator;
     using const_iterator = typename buffer_type::const_iterator;
 
-    small_string() { nulify(0); }
+    string() { nulify(0); }
 
-    explicit small_string(const value_type *p_str) { copy(p_str); }
+    explicit string(const value_type *p_str) { copy(p_str); }
 
     template <class Source>
-    explicit small_string(const Source &p_source) { copy(std::string_view{p_source}); }
+    explicit string(const Source &p_source) { copy(std::string_view{p_source}); }
 
     template <std::size_t SizeOther>
-    small_string(const small_string<SizeOther> &p_str) { *this = p_str; }
+    string(const string<SizeOther> &p_str) { *this = p_str; }
 
     template <std::size_t SizeOther>
-    auto operator=(const small_string<SizeOther> &p_str) -> small_string &
+    auto operator=(const string<SizeOther> &p_str) -> string &
     {
         if (this != p_str) {
             clear();
@@ -37,7 +37,7 @@ public:
         return *this;
     }
 
-    auto operator=(const value_type *p_str) -> small_string &
+    auto operator=(const value_type *p_str) -> string &
     {
         clear();
         copy(p_str);
@@ -80,12 +80,12 @@ public:
     }
 
     template <std::size_t SizeOther>
-    auto append(const small_string<SizeOther> &p_str) -> small_string<Size> &
+    auto append(const string<SizeOther> &p_str) -> string<Size> &
     {
         return append(p_str.c_str());
     }
 
-    auto append(size_type p_count, value_type p_val) -> small_string<Size> &
+    auto append(size_type p_count, value_type p_val) -> string<Size> &
     {
         for (; p_count > 0 && m_length < Size; --p_count, ++m_length) {
             m_string.at(m_length) = p_val;
@@ -94,24 +94,24 @@ public:
         return *this;
     }
 
-    auto append(const value_type *p_str) -> small_string<Size> &
+    auto append(const value_type *p_str) -> string<Size> &
     {
         copy(p_str);
         return *this;
     }
 
     template <std::size_t SizeOther>
-    auto operator+=(const small_string<SizeOther> &p_str) -> small_string<Size> &
+    auto operator+=(const string<SizeOther> &p_str) -> string<Size> &
     {
         return append(p_str);
     }
 
-    auto operator+=(value_type p_val) -> small_string<Size> &
+    auto operator+=(value_type p_val) -> string<Size> &
     {
         return append(1U, p_val);
     }
 
-    auto operator+=(const value_type *p_str) -> small_string<Size> &
+    auto operator+=(const value_type *p_str) -> string<Size> &
     {
         return append(p_str);
     }
@@ -139,45 +139,45 @@ private:
 };
 
 template <std::size_t SizeL, std::size_t SizeR>
-auto operator==(const small_string<SizeL> &p_lhs,
-                const small_string<SizeR> &p_rhs) -> bool
+auto operator==(const string<SizeL> &p_lhs,
+                const string<SizeR> &p_rhs) -> bool
 {
     return p_lhs.c_str() == p_rhs;
 }
 
 template <std::size_t SizeL, std::size_t SizeR>
-auto operator!=(const small_string<SizeL> &p_lhs,
-                const small_string<SizeR> &p_rhs) -> bool
+auto operator!=(const string<SizeL> &p_lhs,
+                const string<SizeR> &p_rhs) -> bool
 {
     return !(p_lhs == p_rhs);
 }
 
 template <std::size_t Size>
-auto operator==(const small_string<Size> &p_lhs, const char *p_rhs) -> bool
+auto operator==(const string<Size> &p_lhs, const char *p_rhs) -> bool
 {
     return std::string_view{p_lhs.c_str()} == std::string_view{p_rhs};
 }
 
 template <std::size_t Size>
-auto operator==(const char *p_lhs, const small_string<Size> p_rhs) -> bool
+auto operator==(const char *p_lhs, const string<Size> p_rhs) -> bool
 {
     return p_rhs == p_lhs;
 }
 
 template <std::size_t Size>
-auto operator!=(const small_string<Size> &p_lhs, const char *p_rhs) -> bool
+auto operator!=(const string<Size> &p_lhs, const char *p_rhs) -> bool
 {
     return !(p_lhs == p_rhs);
 }
 
 template <std::size_t Size>
-auto operator!=(const char *p_lhs, const small_string<Size> &p_rhs) -> bool
+auto operator!=(const char *p_lhs, const string<Size> &p_rhs) -> bool
 {
     return p_rhs != p_lhs;
 }
 
 template <std::size_t Size>
-auto operator==(const small_string<Size> &p_lhs, const std::string_view &p_rhs) -> bool
+auto operator==(const string<Size> &p_lhs, const std::string_view &p_rhs) -> bool
 {
     if (p_lhs.length() != p_rhs.length()) {
         return false;
@@ -195,27 +195,27 @@ auto operator==(const small_string<Size> &p_lhs, const std::string_view &p_rhs) 
 }
 
 template <std::size_t Size>
-auto operator==(const std::string_view &p_lhs, const small_string<Size> p_rhs) -> bool
+auto operator==(const std::string_view &p_lhs, const string<Size> p_rhs) -> bool
 {
     return p_rhs == p_lhs;
 }
 
 template <std::size_t Size>
-auto operator!=(const small_string<Size> &p_lhs, const std::string_view &p_rhs) -> bool
+auto operator!=(const string<Size> &p_lhs, const std::string_view &p_rhs) -> bool
 {
     return !(p_lhs == p_rhs);
 }
 
 template <std::size_t Size>
-auto operator!=(const std::string_view &p_lhs, const small_string<Size> &p_rhs) -> bool
+auto operator!=(const std::string_view &p_lhs, const string<Size> &p_rhs) -> bool
 {
     return p_rhs != p_lhs;
 }
 
 template <class OStream, std::size_t Size>
-auto operator<<(OStream &p_os, const small_string<Size> &p_str) -> OStream &
+auto operator<<(OStream &p_os, const string<Size> &p_str) -> OStream &
 {
     p_os << std::string_view{p_str.c_str()};
     return p_os;
 }
-} // namespace gon
+} // namespace smol

@@ -1,14 +1,14 @@
 #pragma once
 
-#include "small_string.h"
+#include "smol_string.h"
 
-namespace gon::filesystem
+namespace smol::filesystem
 {
 class path
 {
 public:
     using value_type = char;
-    using string_type = gon::small_string<40>;
+    using string_type = smol::string<40>;
 
     static constexpr value_type preferred_separator{'/'};
 
@@ -86,4 +86,4 @@ auto operator<<(OStream &p_os, const path &p_path) -> OStream &
     p_os << "\"" << p_path.native() << "\"";
     return p_os;
 }
-} // namespace gon
+} // namespace smol

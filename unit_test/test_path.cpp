@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "path.h"
 
-namespace fs = gon::filesystem;
+namespace fs = smol::filesystem;
 
 TEST(path, create)
 {

@@ -11,7 +11,7 @@ enable_testing()
 
 add_executable(unit_test
   test_path.cpp
-  test_small_string.cpp
+  test_string.cpp
 )
 target_link_libraries(
   unit_test
