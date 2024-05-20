@@ -30,6 +30,16 @@ TEST(small_string, create)
     }
 }
 
+TEST(small_string, assign)
+{
+    small_string<5> s{"abc"};
+    small_string<5> s2{"xyz"};
+    s = s2;
+    EXPECT_EQ("xyz", s);
+    s = "klm";
+    EXPECT_EQ("klm", s);
+}
+
 TEST(small_string, append)
 {
     {

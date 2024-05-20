@@ -16,10 +16,29 @@ public:
     using iterator = typename buffer_type::iterator;
     using const_iterator = typename buffer_type::const_iterator;
 
-    small_string() { nulify(); }
+    small_string() { nulify(0); }
 
     template <class Source>
     explicit small_string(const Source &source) { copy(source); }
+
+    template <std::size_t SizeOther>
+    small_string(const small_string<SizeOther> &str) { *this = str; }
+
+    template <std::size_t SizeOther>
+    auto operator=(const small_string<SizeOther> &str) -> const small_string<Size> &
+    {
+        if (this != str) {
+            clear();
+            return append(str);
+        }
+        return this;
+    }
+
+    auto operator=(const value_type *s) -> const small_string<Size> &
+    {
+        clear();
+        return append(s);
+    }
 
     [[nodiscard]] auto begin() -> iterator { return m_string.begin(); }
     [[nodiscard]] auto cbegin() const -> const_iterator { return m_string.cbegin(); }
@@ -50,6 +69,12 @@ public:
         return m_string.data();
     }
 
+    auto clear() -> void
+    {
+        m_length = 0;
+        nulify(0);
+    }
+
     template <std::size_t SizeOther>
     auto append(const small_string<SizeOther> &s) -> small_string<Size> &
     {
@@ -61,7 +86,7 @@ public:
         for (; count > 0 && m_length < Size; --count, ++m_length) {
             m_string.at(m_length) = ch;
         }
-        nulify();
+        nulify(m_length);
         return *this;
     }
 
@@ -88,7 +113,7 @@ public:
     }
 
 private:
-    auto nulify() -> void { m_string.at(m_length) = '\0'; }
+    auto nulify(size_type pos) -> void { m_string.at(pos) = '\0'; }
 
     auto copy(std::string_view sv) -> void
     {
@@ -101,7 +126,7 @@ private:
                 }
                 ++m_length;
             }
-            nulify();
+            nulify(m_length);
         }
     }
 
