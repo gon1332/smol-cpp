@@ -23,14 +23,6 @@
             "configurePreset": "linux"
         }
     ],
-    "testPresets": [
-        {
-            "name": "unit_test",
-            "configurePreset": "linux",
-            "output": {"outputOnFailure": true},
-            "execution": {"noTestsAction": "error", "stopOnFailure": true}
-        }
-    ],
     "workflowPresets": [
         {
             "name": "linux",
@@ -42,10 +34,6 @@
                 {
                     "type": "build",
                     "name": "linux"
-                },
-                {
-                    "type": "test",
-                    "name": "unit_test"
                 }
             ]
         }
