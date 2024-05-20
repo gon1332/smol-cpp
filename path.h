@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include "small_string.h"
 
 namespace gon::filesystem
 {
@@ -8,7 +8,7 @@ class path
 {
 public:
     using value_type = char;
-    using string_type = std::basic_string<value_type>;
+    using string_type = gon::small_string<40>;
 
     static constexpr value_type preferred_separator{'/'};
 
