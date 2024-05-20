@@ -1,0 +1,17 @@
+---
+Checks: >
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  cppcoreguidelines-*,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+  performance-*,
+  readability-*,
+  -readability-magic-numbers,
+  -readability-braces-around-statements
+WarningsAsErrors: '*-*'
+HeaderFilterRegex: './*'
+AnalyzeTemporaryDtors: false
+FormatStyle: file

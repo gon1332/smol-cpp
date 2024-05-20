@@ -7,131 +7,131 @@ using namespace gon;
 TEST(small_string, create)
 {
     {
-        small_string<5> s;
-        EXPECT_TRUE(s.empty());
-        EXPECT_EQ(0, s.length());
-        EXPECT_EQ(0, s.size());
-        EXPECT_STREQ("", s.c_str());
+        small_string<5> str;
+        EXPECT_TRUE(str.empty());
+        EXPECT_EQ(0, str.length());
+        EXPECT_EQ(0, str.size());
+        EXPECT_STREQ("", str.c_str());
     }
     {
-        small_string<20> s{"sorry miss jackson"};
-        EXPECT_FALSE(s.empty());
-        EXPECT_EQ(18, s.length());
-        EXPECT_EQ(18, s.size());
-        EXPECT_STREQ("sorry miss jackson", s.c_str());
+        small_string<20> str{"sorry miss jackson"};
+        EXPECT_FALSE(str.empty());
+        EXPECT_EQ(18, str.length());
+        EXPECT_EQ(18, str.size());
+        EXPECT_STREQ("sorry miss jackson", str.c_str());
     }
     {
-        small_string<5> s{"a"};
-        small_string<5> c{s};
-        EXPECT_FALSE(c.empty());
-        EXPECT_EQ(1, c.length());
-        EXPECT_EQ(1, s.size());
-        EXPECT_STREQ("a", c.c_str());
+        small_string<5> str{"a"};
+        small_string<5> str2{str};
+        EXPECT_FALSE(str2.empty());
+        EXPECT_EQ(1, str2.length());
+        EXPECT_EQ(1, str.size());
+        EXPECT_STREQ("a", str2.c_str());
     }
 }
 
 TEST(small_string, assign)
 {
-    small_string<5> s{"abc"};
-    small_string<5> s2{"xyz"};
-    s = s2;
-    EXPECT_EQ("xyz", s);
-    s = "klm";
-    EXPECT_EQ("klm", s);
+    small_string<5> str{"abc"};
+    small_string<5> str2{"xyz"};
+    str = str2;
+    EXPECT_EQ("xyz", str);
+    str = "klm";
+    EXPECT_EQ("klm", str);
 }
 
 TEST(small_string, append)
 {
     {
-        small_string<5> s;
-        EXPECT_STREQ("", s.c_str());
-        EXPECT_EQ(0, s.length());
-        s.append("1");
-        EXPECT_STREQ("1", s.c_str());
-        EXPECT_EQ(1, s.length());
-        s.append("2");
-        EXPECT_STREQ("12", s.c_str());
-        EXPECT_EQ(2, s.length());
-        s.append("345");
-        EXPECT_STREQ("12345", s.c_str());
-        EXPECT_EQ(5, s.length());
-        s.append("678");
-        EXPECT_STREQ("12345", s.c_str());
-        EXPECT_EQ(5, s.length());
+        small_string<5> str;
+        EXPECT_STREQ("", str.c_str());
+        EXPECT_EQ(0, str.length());
+        str.append("1");
+        EXPECT_STREQ("1", str.c_str());
+        EXPECT_EQ(1, str.length());
+        str.append("2");
+        EXPECT_STREQ("12", str.c_str());
+        EXPECT_EQ(2, str.length());
+        str.append("345");
+        EXPECT_STREQ("12345", str.c_str());
+        EXPECT_EQ(5, str.length());
+        str.append("678");
+        EXPECT_STREQ("12345", str.c_str());
+        EXPECT_EQ(5, str.length());
     }
     {
-        small_string<5> s;
-        EXPECT_STREQ("", s.c_str());
-        EXPECT_EQ(0, s.length());
-        s += "1";
-        EXPECT_STREQ("1", s.c_str());
-        EXPECT_EQ(1, s.length());
-        s += '2';
-        EXPECT_STREQ("12", s.c_str());
-        EXPECT_EQ(2, s.length());
-        s += "345";
-        EXPECT_STREQ("12345", s.c_str());
-        EXPECT_EQ(5, s.length());
-        s += "678";
-        EXPECT_STREQ("12345", s.c_str());
-        EXPECT_EQ(5, s.length());
+        small_string<5> str;
+        EXPECT_STREQ("", str.c_str());
+        EXPECT_EQ(0, str.length());
+        str += "1";
+        EXPECT_STREQ("1", str.c_str());
+        EXPECT_EQ(1, str.length());
+        str += '2';
+        EXPECT_STREQ("12", str.c_str());
+        EXPECT_EQ(2, str.length());
+        str += "345";
+        EXPECT_STREQ("12345", str.c_str());
+        EXPECT_EQ(5, str.length());
+        str += "678";
+        EXPECT_STREQ("12345", str.c_str());
+        EXPECT_EQ(5, str.length());
     }
     {
-        small_string<5> s;
-        EXPECT_STREQ("", s.c_str());
-        EXPECT_EQ(0, s.length());
-        s.append(7, 'x');
-        EXPECT_STREQ("xxxxx", s.c_str());
-        EXPECT_EQ(5, s.length());
+        small_string<5> str;
+        EXPECT_STREQ("", str.c_str());
+        EXPECT_EQ(0, str.length());
+        str.append(7, 'x');
+        EXPECT_STREQ("xxxxx", str.c_str());
+        EXPECT_EQ(5, str.length());
     }
     {
-        small_string<5> s;
-        small_string<2> s1{"ab"};
-        small_string<4> s2{"cdef"};
-        s += s1;
-        EXPECT_EQ("ab", s);
-        s += s2;
-        EXPECT_EQ(5, s.length());
-        EXPECT_EQ("abcde", s);
+        small_string<5> str;
+        small_string<2> str1{"ab"};
+        small_string<4> str2{"cdef"};
+        str += str1;
+        EXPECT_EQ("ab", str);
+        str += str2;
+        EXPECT_EQ(5, str.length());
+        EXPECT_EQ("abcde", str);
     }
 }
 
 TEST(small_string, compare)
 {
-    small_string<5> s1{"abc"};
-    small_string<6> s2{"abc"};
-    std::string_view sv{"abc"};
-    EXPECT_EQ(s1, s2);
-    EXPECT_EQ(s2, s1);
-    EXPECT_EQ(s1, "abc");
-    EXPECT_EQ("abc", s1);
-    EXPECT_EQ(s1, sv);
-    EXPECT_EQ(sv, s1);
+    small_string<5> str1{"abc"};
+    small_string<6> str2{"abc"};
+    std::string_view sview{"abc"};
+    EXPECT_EQ(str1, str2);
+    EXPECT_EQ(str2, str1);
+    EXPECT_EQ(str1, "abc");
+    EXPECT_EQ("abc", str1);
+    EXPECT_EQ(str1, sview);
+    EXPECT_EQ(sview, str1);
 
-    small_string<5> s3{"ab"};
-    EXPECT_NE(s1, s3);
-    EXPECT_NE(s3, s1);
-    EXPECT_NE(s1, "ab");
-    EXPECT_NE("ab", s1);
-    std::string_view sv2{"a"};
-    EXPECT_NE(s1, sv2);
-    EXPECT_NE(sv2, s1);
+    small_string<5> str3{"ab"};
+    EXPECT_NE(str1, str3);
+    EXPECT_NE(str3, str1);
+    EXPECT_NE(str1, "ab");
+    EXPECT_NE("ab", str1);
+    std::string_view sview2{"a"};
+    EXPECT_NE(str1, sview2);
+    EXPECT_NE(sview2, str1);
 }
 
 TEST(small_string, element_access)
 {
-    small_string<5> s{"abcde"};
-    EXPECT_EQ('a', *s.begin());
-    EXPECT_EQ('a', s[0]);
-    EXPECT_EQ('b', s[1]);
-    EXPECT_EQ('c', s[2]);
-    EXPECT_EQ('d', s[3]);
-    EXPECT_EQ('e', s[4]);
-    EXPECT_EQ('a', s.front());
-    EXPECT_EQ('e', s.back());
+    small_string<5> str{"abcde"};
+    EXPECT_EQ('a', *str.begin());
+    EXPECT_EQ('a', str[0]);
+    EXPECT_EQ('b', str[1]);
+    EXPECT_EQ('c', str[2]);
+    EXPECT_EQ('d', str[3]);
+    EXPECT_EQ('e', str[4]);
+    EXPECT_EQ('a', str.front());
+    EXPECT_EQ('e', str.back());
 
-    s.front() = 'e';
-    EXPECT_EQ('e', s.front());
-    s.back() = 'a';
-    EXPECT_EQ('a', s.back());
+    str.front() = 'e';
+    EXPECT_EQ('e', str.front());
+    str.back() = 'a';
+    EXPECT_EQ('a', str.back());
 }

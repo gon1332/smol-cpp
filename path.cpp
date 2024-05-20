@@ -3,43 +3,45 @@
 
 namespace gon::filesystem
 {
-path::path(string_type &&source) : path(source) {}
+path::path(string_type &&p_str) : m_path{p_str} {}
 
-auto path::operator/=(const path &p) -> path &
+path::path(const value_type *p_str) : m_path{p_str} {}
+
+auto path::operator/=(const path &p_path) -> path &
 {
-    if (p.is_absolute()) {
-        m_path = p.native();
+    if (p_path.is_absolute()) {
+        m_path = p_path.native();
         return *this;
     }
 
     if (has_filename())
         m_path += preferred_separator;
 
-    m_path += p.native();
+    m_path += p_path.native();
     return *this;
 }
 
-auto path::operator+=(const path &p) -> path &
+auto path::operator+=(const path &p_path) -> path &
 {
-    m_path += p.native();
+    m_path += p_path.native();
     return *this;
 }
 
-auto path::operator+=(const string_type &str) -> path &
+auto path::operator+=(const string_type &p_str) -> path &
 {
-    m_path += str;
+    m_path += p_str;
     return *this;
 }
 
-auto path::operator+=(const value_type *ptr) -> path &
+auto path::operator+=(const value_type *p_str) -> path &
 {
-    m_path += ptr;
+    m_path += p_str;
     return *this;
 }
 
-auto path::operator+=(value_type x) -> path &
+auto path::operator+=(value_type p_val) -> path &
 {
-    return *this += std::string_view(&x, 1);
+    return *this += std::string_view(&p_val, 1);
 }
 
 auto path::native() const noexcept -> const string_type & { return m_path; }
@@ -66,13 +68,13 @@ auto path::is_relative() const noexcept -> bool
     return !is_absolute();
 }
 
-bool operator==(const path &lhs, const path &rhs) noexcept
+bool operator==(const path &p_lhs, const path &p_rhs) noexcept
 {
-    return lhs.m_path == rhs.m_path;
+    return p_lhs.m_path == p_rhs.m_path;
 }
 
-bool operator!=(const path &lhs, const path &rhs) noexcept
+bool operator!=(const path &p_lhs, const path &p_rhs) noexcept
 {
-    return !(lhs == rhs);
+    return !(p_lhs == p_rhs);
 }
 } // namespace gon

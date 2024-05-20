@@ -14,25 +14,26 @@ public:
 
 
     path() noexcept = default;
-    explicit path(string_type &&source);
+    explicit path(string_type &&p_str);
+    explicit path(const value_type *p_str);
     template <class Source>
-    explicit path(const Source &source);
+    explicit path(const Source &p_source);
 
     /// Concatenation
-    auto operator/=(const path &source) -> path &;
+    auto operator/=(const path &p_path) -> path &;
     template <class Source>
-    auto operator/=(const Source &source) -> path &;
+    auto operator/=(const Source &p_source) -> path &;
     template <class Source>
-    auto append(const Source &source) -> path &;
+    auto append(const Source &p_source) -> path &;
 
-    auto operator+=(const path &p) -> path &;
-    auto operator+=(const string_type &str) -> path &;
-    auto operator+=(const value_type *ptr) -> path &;
-    auto operator+=(value_type x) -> path &;
+    auto operator+=(const path &p_path) -> path &;
+    auto operator+=(const string_type &p_str) -> path &;
+    auto operator+=(const value_type *p_str) -> path &;
+    auto operator+=(value_type p_val) -> path &;
     template <class Source>
-    auto operator+=(const Source &source) -> path &;
+    auto operator+=(const Source &p_source) -> path &;
     template <class Source>
-    auto concat(const Source &source) -> path &;
+    auto concat(const Source &p_source) -> path &;
 
     /// Format Observers
     auto native() const noexcept -> const string_type &;
@@ -43,46 +44,46 @@ public:
     [[nodiscard]] auto is_absolute() const noexcept -> bool;
     [[nodiscard]] auto is_relative() const noexcept -> bool;
 
-    friend bool operator==(const path &lhs, const path &rhs) noexcept;
-    friend bool operator!=(const path &lhs, const path &rhs) noexcept;
+    friend bool operator==(const path &p_lhs, const path &p_rhs) noexcept;
+    friend bool operator!=(const path &p_lhs, const path &p_rhs) noexcept;
     template <class OStream>
-    friend auto operator<<(OStream &os, const path &p) -> OStream &;
+    friend auto operator<<(OStream &p_os, const path &p_path) -> OStream &;
 
 private:
     string_type m_path;
 };
 
 template <class Source>
-path::path(const Source &source) : m_path{source} {}
+path::path(const Source &p_source) : m_path{p_source} {}
 
 template <class Source>
-auto path::operator/=(const Source &source) -> path &
+auto path::operator/=(const Source &p_source) -> path &
 {
-    return operator/=(path(source));
+    return operator/=(path(p_source));
 }
 
 template <class Source>
-auto path::append(const Source &source) -> path &
+auto path::append(const Source &p_source) -> path &
 {
-    return operator/=(path(source));
+    return operator/=(p_source);
 }
 
 template <class Source>
-auto path::operator+=(const Source &source) -> path &
+auto path::operator+=(const Source &p_source) -> path &
 {
-    return operator+=(path(source));
+    return operator+=(p_source);
 }
 
 template <class Source>
-auto path::concat(const Source &source) -> path &
+auto path::concat(const Source &p_source) -> path &
 {
-    return operator+=(path(source));
+    return operator+=(p_source);
 }
 
 template <class OStream>
-auto operator<<(OStream &os, const path &p) -> OStream &
+auto operator<<(OStream &p_os, const path &p_path) -> OStream &
 {
-    os << "\"" << p.native() << "\"";
-    return os;
+    p_os << "\"" << p_path.native() << "\"";
+    return p_os;
 }
 } // namespace gon

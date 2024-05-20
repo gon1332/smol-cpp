@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <array>
+#include <iterator>
 #include <string_view>
 
 namespace gon
@@ -18,26 +19,29 @@ public:
 
     small_string() { nulify(0); }
 
+    explicit small_string(const value_type *p_str) { copy(p_str); }
+
     template <class Source>
-    explicit small_string(const Source &source) { copy(source); }
+    explicit small_string(const Source &p_source) { copy(std::string_view{p_source}); }
 
     template <std::size_t SizeOther>
-    small_string(const small_string<SizeOther> &str) { *this = str; }
+    small_string(const small_string<SizeOther> &p_str) { *this = p_str; }
 
     template <std::size_t SizeOther>
-    auto operator=(const small_string<SizeOther> &str) -> const small_string<Size> &
+    auto operator=(const small_string<SizeOther> &p_str) -> small_string &
     {
-        if (this != str) {
+        if (this != p_str) {
             clear();
-            return append(str);
+            copy(p_str);
         }
-        return this;
+        return *this;
     }
 
-    auto operator=(const value_type *s) -> const small_string<Size> &
+    auto operator=(const value_type *p_str) -> small_string &
     {
         clear();
-        return append(s);
+        copy(p_str);
+        return *this;
     }
 
     [[nodiscard]] auto begin() -> iterator { return m_string.begin(); }
@@ -49,14 +53,14 @@ public:
     [[nodiscard]] auto size() const noexcept -> size_type { return m_length; }
     [[nodiscard]] auto length() const noexcept -> size_type { return size(); }
 
-    auto operator[](size_type pos) -> value_type &
+    auto operator[](size_type p_pos) -> value_type &
     {
-        return *(begin() + pos);
+        return *(begin() + p_pos);
     }
 
-    auto operator[](size_type pos) const -> const value_type &
+    auto operator[](size_type p_pos) const -> const value_type &
     {
-        return *(cbegin() + pos);
+        return *(cbegin() + p_pos);
     }
 
     auto front() -> value_type & { return operator[](0); }
@@ -76,51 +80,51 @@ public:
     }
 
     template <std::size_t SizeOther>
-    auto append(const small_string<SizeOther> &s) -> small_string<Size> &
+    auto append(const small_string<SizeOther> &p_str) -> small_string<Size> &
     {
-        return append(s.c_str());
+        return append(p_str.c_str());
     }
 
-    auto append(size_type count, value_type ch) -> small_string<Size> &
+    auto append(size_type p_count, value_type p_val) -> small_string<Size> &
     {
-        for (; count > 0 && m_length < Size; --count, ++m_length) {
-            m_string.at(m_length) = ch;
+        for (; p_count > 0 && m_length < Size; --p_count, ++m_length) {
+            m_string.at(m_length) = p_val;
         }
         nulify(m_length);
         return *this;
     }
 
-    auto append(const value_type *s) -> small_string<Size> &
+    auto append(const value_type *p_str) -> small_string<Size> &
     {
-        copy(s);
+        copy(p_str);
         return *this;
     }
 
     template <std::size_t SizeOther>
-    auto operator+=(const small_string<SizeOther> &s) -> small_string<Size> &
+    auto operator+=(const small_string<SizeOther> &p_str) -> small_string<Size> &
     {
-        return append(s);
+        return append(p_str);
     }
 
-    auto operator+=(value_type ch) -> small_string<Size> &
+    auto operator+=(value_type p_val) -> small_string<Size> &
     {
-        return append(1U, ch);
+        return append(1U, p_val);
     }
 
-    auto operator+=(const value_type *s) -> small_string<Size> &
+    auto operator+=(const value_type *p_str) -> small_string<Size> &
     {
-        return append(s);
+        return append(p_str);
     }
 
 private:
-    auto nulify(size_type pos) -> void { m_string.at(pos) = '\0'; }
+    auto nulify(size_type p_pos) -> void { m_string.at(p_pos) = '\0'; }
 
-    auto copy(std::string_view sv) -> void
+    auto copy(std::string_view p_sv) -> void
     {
-        if (sv.size() > 0) {
-            for (const auto c : sv) {
+        if (!p_sv.empty()) {
+            for (const auto val : p_sv) {
                 if (m_length < Size) {
-                    m_string.at(m_length) = c;
+                    m_string.at(m_length) = val;
                 } else {
                     break;
                 }
@@ -135,60 +139,54 @@ private:
 };
 
 template <std::size_t SizeL, std::size_t SizeR>
-auto operator==(const small_string<SizeL> &lhs,
-                const small_string<SizeR> &rhs) -> bool
+auto operator==(const small_string<SizeL> &p_lhs,
+                const small_string<SizeR> &p_rhs) -> bool
 {
-    return lhs.c_str() == rhs;
+    return p_lhs.c_str() == p_rhs;
 }
 
 template <std::size_t SizeL, std::size_t SizeR>
-auto operator!=(const small_string<SizeL> &lhs,
-                const small_string<SizeR> &rhs) -> bool
+auto operator!=(const small_string<SizeL> &p_lhs,
+                const small_string<SizeR> &p_rhs) -> bool
 {
-    return !(lhs == rhs);
+    return !(p_lhs == p_rhs);
 }
 
 template <std::size_t Size>
-auto operator==(const small_string<Size> &lhs, const char *rhs) -> bool
+auto operator==(const small_string<Size> &p_lhs, const char *p_rhs) -> bool
 {
-    const char *l = lhs.c_str();
-    const char *r = rhs;
-    while (*l && *l == *r) {
-        ++l;
-        ++r;
-    }
-    return *l == *r;
+    return std::string_view{p_lhs.c_str()} == std::string_view{p_rhs};
 }
 
 template <std::size_t Size>
-auto operator==(const char *lhs, const small_string<Size> rhs) -> bool
+auto operator==(const char *p_lhs, const small_string<Size> p_rhs) -> bool
 {
-    return rhs == lhs;
+    return p_rhs == p_lhs;
 }
 
 template <std::size_t Size>
-auto operator!=(const small_string<Size> &lhs, const char *rhs) -> bool
+auto operator!=(const small_string<Size> &p_lhs, const char *p_rhs) -> bool
 {
-    return !(lhs == rhs);
+    return !(p_lhs == p_rhs);
 }
 
 template <std::size_t Size>
-auto operator!=(const char *lhs, const small_string<Size> &rhs) -> bool
+auto operator!=(const char *p_lhs, const small_string<Size> &p_rhs) -> bool
 {
-    return rhs != lhs;
+    return p_rhs != p_lhs;
 }
 
 template <std::size_t Size>
-auto operator==(const small_string<Size> &lhs, const std::string_view &rhs) -> bool
+auto operator==(const small_string<Size> &p_lhs, const std::string_view &p_rhs) -> bool
 {
-    if (lhs.length() != rhs.length()) {
+    if (p_lhs.length() != p_rhs.length()) {
         return false;
     }
-    auto it_l = lhs.cbegin();
-    auto it_r = rhs.cbegin();
-    auto end_l = lhs.cend();
-    auto end_r = rhs.cend();
-    for (; it_l != end_l && it_r != end_r; ++it_l, ++it_r) {
+    const auto *it_l = p_lhs.cbegin();
+    const auto *it_r = p_rhs.cbegin();
+    const auto *end_l = p_lhs.cend();
+    const auto *end_r = p_rhs.cend();
+    for (; it_l != end_l && it_r != end_r; std::advance(it_l, 1), std::advance(it_r, 1)) {
         if (*it_l != *it_r) {
             return false;
         }
@@ -197,27 +195,27 @@ auto operator==(const small_string<Size> &lhs, const std::string_view &rhs) -> b
 }
 
 template <std::size_t Size>
-auto operator==(const std::string_view &lhs, const small_string<Size> rhs) -> bool
+auto operator==(const std::string_view &p_lhs, const small_string<Size> p_rhs) -> bool
 {
-    return rhs == lhs;
+    return p_rhs == p_lhs;
 }
 
 template <std::size_t Size>
-auto operator!=(const small_string<Size> &lhs, const std::string_view &rhs) -> bool
+auto operator!=(const small_string<Size> &p_lhs, const std::string_view &p_rhs) -> bool
 {
-    return !(lhs == rhs);
+    return !(p_lhs == p_rhs);
 }
 
 template <std::size_t Size>
-auto operator!=(const std::string_view &lhs, const small_string<Size> &rhs) -> bool
+auto operator!=(const std::string_view &p_lhs, const small_string<Size> &p_rhs) -> bool
 {
-    return rhs != lhs;
+    return p_rhs != p_lhs;
 }
 
 template <class OStream, std::size_t Size>
-auto operator<<(OStream &os, const small_string<Size> &str) -> OStream &
+auto operator<<(OStream &p_os, const small_string<Size> &p_str) -> OStream &
 {
-    os << std::string_view{str.c_str()};
-    return os;
+    p_os << std::string_view{p_str.c_str()};
+    return p_os;
 }
 } // namespace gon

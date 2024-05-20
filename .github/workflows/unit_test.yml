@@ -7,6 +7,16 @@ on:
     branches: [ "master" ]
 
 jobs:
+  static-analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Configure CMake
+      run: cmake --preset=linux
+    - name: Run linter checks
+      run: bash ./scripts/run_linter_checks.sh
   build:
     name: Test
     runs-on: ubuntu-latest
