@@ -92,6 +92,15 @@ TEST(path, concat)
     EXPECT_EQ(path, fs::path("//"));
     path += "a";
     EXPECT_EQ(path, fs::path("//a"));
+    path += fs::path::string_type("b");
+    EXPECT_EQ(path, fs::path("//ab"));
+    path += 'c';
+    EXPECT_EQ(path, fs::path("//abc"));
     path += ".txt";
-    EXPECT_EQ(path, fs::path("//a.txt"));
+    EXPECT_EQ(path, fs::path("//abc.txt"));
+}
+
+TEST(path, equality)
+{
+    EXPECT_NE(fs::path("/"), fs::path("//"));
 }

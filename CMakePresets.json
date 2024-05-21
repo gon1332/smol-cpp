@@ -14,7 +14,20 @@
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "/usr/bin/clang",
                 "CMAKE_CXX_COMPILER": "/bin/clang++",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "coverage",
+            "displayName": "Build for GNU+Linux using clang",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "/usr/bin/clang",
+                "CMAKE_CXX_COMPILER": "/bin/clang++",
+                "CMAKE_CXX_FLAGS": "-fprofile-instr-generate -fcoverage-mapping",
+                "CMAKE_BUILD_TYPE": "Release"
             }
         }
     ],
@@ -22,6 +35,10 @@
         {
             "name": "linux",
             "configurePreset": "linux"
+        },
+        {
+            "name": "coverage",
+            "configurePreset": "coverage"
         }
     ],
     "workflowPresets": [
@@ -35,6 +52,19 @@
                 {
                     "type": "build",
                     "name": "linux"
+                }
+            ]
+        },
+        {
+            "name": "coverage",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "coverage"
+                },
+                {
+                    "type": "build",
+                    "name": "coverage"
                 }
             ]
         }

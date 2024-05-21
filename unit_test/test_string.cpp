@@ -33,6 +33,13 @@ TEST(string, create)
         EXPECT_EQ(1, str.size());
         EXPECT_STREQ("a", str2.c_str());
     }
+    {
+        smol::string<3> str{"abcde"};
+        EXPECT_FALSE(str.empty());
+        EXPECT_EQ(3, str.length());
+        EXPECT_EQ(3, str.size());
+        EXPECT_STREQ("abc", str.c_str());
+    }
 }
 
 TEST(string, assign)
