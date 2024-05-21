@@ -8,6 +8,18 @@ TEST(path, create)
     {
         fs::path path;
         EXPECT_TRUE(path.empty());
+        EXPECT_TRUE(path.has_filename());
+        EXPECT_FALSE(path.is_absolute());
+        EXPECT_TRUE(path.is_relative());
+        EXPECT_EQ(path, fs::path(""));
+    }
+    {
+        fs::path path{""};
+        EXPECT_TRUE(path.empty());
+        EXPECT_TRUE(path.has_filename());
+        EXPECT_FALSE(path.is_absolute());
+        EXPECT_TRUE(path.is_relative());
+        EXPECT_EQ(path, fs::path(""));
     }
     {
         fs::path path{"."};
@@ -15,6 +27,7 @@ TEST(path, create)
         EXPECT_TRUE(path.has_filename());
         EXPECT_FALSE(path.is_absolute());
         EXPECT_TRUE(path.is_relative());
+        EXPECT_EQ(path, fs::path("."));
     }
     {
         fs::path path{"/"};
@@ -22,6 +35,7 @@ TEST(path, create)
         EXPECT_FALSE(path.has_filename());
         EXPECT_TRUE(path.is_absolute());
         EXPECT_FALSE(path.is_relative());
+        EXPECT_EQ(path, fs::path("/"));
     }
     {
         fs::path path{"/mnt"};
@@ -29,6 +43,7 @@ TEST(path, create)
         EXPECT_TRUE(path.has_filename());
         EXPECT_TRUE(path.is_absolute());
         EXPECT_FALSE(path.is_relative());
+        EXPECT_EQ(path, fs::path("/mnt"));
 
         fs::path path2{path};
         EXPECT_FALSE(path.empty());

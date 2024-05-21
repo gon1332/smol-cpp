@@ -12,6 +12,13 @@ TEST(string, create)
         EXPECT_STREQ("", str.c_str());
     }
     {
+        smol::string<5> str{""};
+        EXPECT_TRUE(str.empty());
+        EXPECT_EQ(0, str.length());
+        EXPECT_EQ(0, str.size());
+        EXPECT_STREQ("", str.c_str());
+    }
+    {
         smol::string<20> str{"sorry miss jackson"};
         EXPECT_FALSE(str.empty());
         EXPECT_EQ(18, str.length());

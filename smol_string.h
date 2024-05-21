@@ -130,8 +130,8 @@ private:
                 }
                 ++m_length;
             }
-            nulify(m_length);
         }
+        nulify(m_length);
     }
 
     buffer_type m_string;
