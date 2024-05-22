@@ -33,6 +33,12 @@ auto path::operator+=(const string_type &p_str) -> path &
     return *this;
 }
 
+auto path::operator+=(std::string_view p_str) -> path &
+{
+    m_path += string_type{p_str.begin(), p_str.end()};
+    return *this;
+}
+
 auto path::operator+=(const value_type *p_str) -> path &
 {
     m_path += p_str;

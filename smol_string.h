@@ -24,6 +24,9 @@ public:
     template <class Source>
     explicit string(const Source &p_source) { copy(std::string_view{p_source}); }
 
+    template <class InputIt>
+    string(InputIt p_first, InputIt p_last) { copy(p_first, p_last); }
+
     template <std::size_t SizeOther>
     string(const string<SizeOther> &p_str) { *this = p_str; }
 
@@ -119,19 +122,23 @@ public:
 private:
     auto nulify(size_type p_pos) -> void { m_string.at(p_pos) = '\0'; }
 
-    auto copy(std::string_view p_sv) -> void
+    template <class InputIt>
+    auto copy(InputIt p_first, InputIt p_last) -> void
     {
-        if (!p_sv.empty()) {
-            for (const auto val : p_sv) {
-                if (m_length < Size) {
-                    m_string.at(m_length) = val;
-                } else {
-                    break;
-                }
-                ++m_length;
+        for (const auto *val = p_first; val != p_last; std::advance(val, 1)) {
+            if (m_length < Size) {
+                m_string.at(m_length) = *val;
+            } else {
+                break;
             }
+            ++m_length;
         }
         nulify(m_length);
+    }
+
+    auto copy(std::string_view p_sv) -> void
+    {
+        copy(p_sv.begin(), p_sv.end());
     }
 
     buffer_type m_string;
