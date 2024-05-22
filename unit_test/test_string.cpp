@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <sstream>
 #include <string_view>
 #include "smol_string.h"
 
@@ -35,6 +36,14 @@ TEST(string, create)
     }
     {
         smol::string<3> str{"abcde"};
+        EXPECT_FALSE(str.empty());
+        EXPECT_EQ(3, str.length());
+        EXPECT_EQ(3, str.size());
+        EXPECT_STREQ("abc", str.c_str());
+    }
+    {
+        std::string_view str_v{"abcde"};
+        smol::string<3> str{str_v.begin(), str_v.end()};
         EXPECT_FALSE(str.empty());
         EXPECT_EQ(3, str.length());
         EXPECT_EQ(3, str.size());
@@ -125,9 +134,12 @@ TEST(string, compare)
     EXPECT_NE(str3, str1);
     EXPECT_NE(str1, "ab");
     EXPECT_NE("ab", str1);
-    std::string_view sview2{"a"};
+    std::string_view sview2{"a"}; // different length
     EXPECT_NE(str1, sview2);
     EXPECT_NE(sview2, str1);
+    std::string_view sview3{"ac"}; // same length
+    EXPECT_NE(str1, sview3);
+    EXPECT_NE(sview3, str1);
 }
 
 TEST(string, element_access)
@@ -146,4 +158,12 @@ TEST(string, element_access)
     EXPECT_EQ('e', str.front());
     str.back() = 'a';
     EXPECT_EQ('a', str.back());
+}
+
+TEST(string, stream)
+{
+    smol::string<5> str{"abcde"};
+    std::stringstream out;
+    out << str;
+    EXPECT_EQ("abcde", out.str());
 }

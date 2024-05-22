@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <sstream>
 #include "path.h"
 
 namespace fs = smol::filesystem;
@@ -36,6 +37,16 @@ TEST(path, create)
         EXPECT_TRUE(path.is_absolute());
         EXPECT_FALSE(path.is_relative());
         EXPECT_EQ(path, fs::path("/"));
+    }
+    {
+        fs::path::string_type str{"/mnt"};
+        auto &&str_rval{str};
+        fs::path path{str_rval};
+        EXPECT_FALSE(path.empty());
+        EXPECT_TRUE(path.has_filename());
+        EXPECT_TRUE(path.is_absolute());
+        EXPECT_FALSE(path.is_relative());
+        EXPECT_EQ(path, fs::path("/mnt"));
     }
     {
         std::string_view path_view{"/mnt"};
@@ -114,4 +125,11 @@ TEST(path, concat)
 TEST(path, equality)
 {
     EXPECT_NE(fs::path("/"), fs::path("//"));
+}
+
+TEST(path, stream)
+{
+    std::stringstream out;
+    out << fs::path{"/mnt/everest"};
+    EXPECT_EQ("\"/mnt/everest\"", out.str());
 }
