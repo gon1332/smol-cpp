@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <sstream>
 #include <string_view>
-#include "smol_string.h"
+#include "smol/string.h"
 
 TEST(string, create)
 {

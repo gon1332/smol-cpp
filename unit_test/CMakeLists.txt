@@ -15,7 +15,7 @@ add_executable(unit_test
 )
 target_link_libraries(
   unit_test
-  filesystem
+  smol
   GTest::gtest_main
 )
 

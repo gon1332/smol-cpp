@@ -1,6 +1,6 @@
 #pragma once
 
-#include "smol_string.h"
+#include "string.h"
 #include <string_view>
 
 namespace smol::filesystem

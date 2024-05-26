@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <sstream>
-#include "path.h"
+#include "smol/path.h"
 
 namespace fs = smol::filesystem;
 
