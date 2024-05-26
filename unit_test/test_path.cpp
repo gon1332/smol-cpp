@@ -10,6 +10,7 @@ TEST(path, create)
         fs::path path;
         EXPECT_TRUE(path.empty());
         EXPECT_TRUE(path.has_filename());
+        EXPECT_FALSE(path.has_root_directory());
         EXPECT_FALSE(path.is_absolute());
         EXPECT_TRUE(path.is_relative());
         EXPECT_EQ(path, fs::path(""));
@@ -18,6 +19,7 @@ TEST(path, create)
         fs::path path{""};
         EXPECT_TRUE(path.empty());
         EXPECT_TRUE(path.has_filename());
+        EXPECT_FALSE(path.has_root_directory());
         EXPECT_FALSE(path.is_absolute());
         EXPECT_TRUE(path.is_relative());
         EXPECT_EQ(path, fs::path(""));
@@ -26,6 +28,7 @@ TEST(path, create)
         fs::path path{"."};
         EXPECT_FALSE(path.empty());
         EXPECT_TRUE(path.has_filename());
+        EXPECT_FALSE(path.has_root_directory());
         EXPECT_FALSE(path.is_absolute());
         EXPECT_TRUE(path.is_relative());
         EXPECT_EQ(path, fs::path("."));
@@ -34,9 +37,19 @@ TEST(path, create)
         fs::path path{"/"};
         EXPECT_FALSE(path.empty());
         EXPECT_FALSE(path.has_filename());
+        EXPECT_TRUE(path.has_root_directory());
         EXPECT_TRUE(path.is_absolute());
         EXPECT_FALSE(path.is_relative());
         EXPECT_EQ(path, fs::path("/"));
+    }
+    {
+        fs::path path{"a/b/c"};
+        EXPECT_FALSE(path.empty());
+        EXPECT_TRUE(path.has_filename());
+        EXPECT_FALSE(path.has_root_directory());
+        EXPECT_FALSE(path.is_absolute());
+        EXPECT_TRUE(path.is_relative());
+        EXPECT_EQ(path, fs::path("a/b/c"));
     }
     {
         fs::path::string_type str{"/mnt"};
@@ -44,6 +57,7 @@ TEST(path, create)
         fs::path path{str_rval};
         EXPECT_FALSE(path.empty());
         EXPECT_TRUE(path.has_filename());
+        EXPECT_TRUE(path.has_root_directory());
         EXPECT_TRUE(path.is_absolute());
         EXPECT_FALSE(path.is_relative());
         EXPECT_EQ(path, fs::path("/mnt"));
@@ -53,6 +67,7 @@ TEST(path, create)
         fs::path path{path_view.begin(), path_view.end()};
         EXPECT_FALSE(path.empty());
         EXPECT_TRUE(path.has_filename());
+        EXPECT_TRUE(path.has_root_directory());
         EXPECT_TRUE(path.is_absolute());
         EXPECT_FALSE(path.is_relative());
         EXPECT_EQ(path, fs::path("/mnt"));
@@ -61,6 +76,7 @@ TEST(path, create)
         fs::path path{"/mnt"};
         EXPECT_FALSE(path.empty());
         EXPECT_TRUE(path.has_filename());
+        EXPECT_TRUE(path.has_root_directory());
         EXPECT_TRUE(path.is_absolute());
         EXPECT_FALSE(path.is_relative());
         EXPECT_EQ(path, fs::path("/mnt"));
@@ -122,9 +138,30 @@ TEST(path, concat)
     EXPECT_EQ(path, fs::path("//ab/c.txt"));
 }
 
+TEST(path, lexically_normal)
+{
+    EXPECT_EQ("", fs::path("").lexically_normal().native());
+    EXPECT_EQ("/", fs::path("/").lexically_normal().native());
+    EXPECT_EQ("/a/b/c", fs::path("/a/b/c").lexically_normal().native());
+    EXPECT_EQ("/a/b/c", fs::path("//a//b//c").lexically_normal().native());
+    EXPECT_EQ("/", fs::path("//").lexically_normal().native());
+    EXPECT_EQ("/", fs::path("///").lexically_normal().native());
+    EXPECT_EQ("/", fs::path("/.").lexically_normal().native());
+    EXPECT_EQ("/", fs::path("/././").lexically_normal().native());
+    EXPECT_EQ("/", fs::path("/a/..").lexically_normal().native());
+    EXPECT_EQ(".", fs::path("./").lexically_normal().native());
+    EXPECT_EQ(".", fs::path("a/../").lexically_normal().native());
+    EXPECT_EQ(".", fs::path("a/..").lexically_normal().native());
+    EXPECT_EQ("a/b", fs::path("a/b").lexically_normal().native());
+    EXPECT_EQ("a/", fs::path("a///").lexically_normal().native());
+    EXPECT_EQ("/a/c/", fs::path("/a/b/../c/").lexically_normal().native());
+}
+
 TEST(path, equality)
 {
     EXPECT_NE(fs::path("/"), fs::path("//"));
+    EXPECT_EQ("a/b/c", fs::path("a/b/c").native());
+    EXPECT_EQ("a/b/c/", fs::path("a/b/c/").native());
 }
 
 TEST(path, stream)

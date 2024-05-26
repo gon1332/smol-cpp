@@ -19,4 +19,4 @@ jobs:
       run: cmake --preset=linux
 
     - name: Run linter checks
-      run: clang-tidy -p build/linux --format-style='file' ./*.h unit_test/*.cpp
+      run: clang-tidy -p build/linux --format-style='file' include/smol/*.h unit_test/*.cpp
