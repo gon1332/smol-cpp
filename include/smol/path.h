@@ -1,6 +1,7 @@
 #pragma once
 
 #include "string.h"
+#include <algorithm>
 #include <iterator>
 #include <string_view>
 #include "algorithm.h"
@@ -87,6 +88,7 @@ public:
         {
             return p_lhs.m_pos == p_rhs.m_pos && p_lhs.m_path == p_rhs.m_path;
         }
+
         friend auto operator!=(const iterator &p_lhs, const iterator &p_rhs) -> bool
         {
             return !(p_lhs == p_rhs);
@@ -116,7 +118,7 @@ public:
 
             const auto *end_it = std::find(start_it, m_path->cend(), preferred_separator);
             m_part = value_type{start_it, end_it};
-            m_pos = std::distance(m_path->cbegin(), end_it);
+            m_pos = static_cast<std::size_t>(std::distance(m_path->cbegin(), end_it));
         }
     };
 
