@@ -4,7 +4,10 @@ project(smol)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(smol INTERFACE)
-target_include_directories(smol INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+add_library(smol OBJECT
+    src/filesystem_path.cpp
+    src/filesystem_posix.cpp
+)
+target_include_directories(smol PUBLIC include)
 
 add_subdirectory(unit_test)

@@ -10,6 +10,8 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 add_executable(unit_test
+  test_algorithm.cpp
+  test_filesystem.cpp
   test_path.cpp
   test_string.cpp
 )
