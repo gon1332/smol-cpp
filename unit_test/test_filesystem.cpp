@@ -6,8 +6,8 @@ namespace fs = smol::filesystem;
 
 TEST(filesystem, current_path)
 {
-    std::error_code ec;
-    fs::current_path(fs::path{"/tmp"}, ec);
-    ASSERT_FALSE(ec);
+    std::error_code errc;
+    fs::current_path(fs::path{"/tmp"}, errc);
+    ASSERT_FALSE(errc);
     EXPECT_EQ(fs::path{"/tmp"}, fs::current_path());
 }
