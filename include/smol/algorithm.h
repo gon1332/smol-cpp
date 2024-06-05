@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 namespace smol
 {
 template <class InputIt, class ForwardIt>
