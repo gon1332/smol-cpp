@@ -51,4 +51,5 @@ auto remove(const path &p_path, std::error_code &p_ec) noexcept -> bool
     p_ec.clear();
     return true;
 }
+
 } // namespace smol::filesystem
