@@ -32,6 +32,16 @@ auto current_path(const path &p_path, std::error_code &p_ec) -> void
     p_ec.clear();
 }
 
+auto exists(file_status p_status) noexcept -> bool
+{
+    return status_known(p_status) && p_status.type() != file_type::not_found;
+}
+
+auto exists(const path &p_path, std::error_code &p_ec) noexcept -> bool
+{
+    return exists(status(p_path, p_ec));
+}
+
 auto remove(const path &p_path, std::error_code &p_ec) noexcept -> bool
 {
     auto path_str = p_path.native().c_str();
@@ -106,5 +116,40 @@ auto is_directory(file_status p_status) noexcept -> bool
 auto is_directory(const path &p_path, std::error_code& p_ec) noexcept -> bool
 {
     return is_directory(status(p_path, p_ec));
+}
+
+auto is_regular(file_status p_status) noexcept -> bool
+{
+    return p_status.type() == file_type::regular;
+}
+
+auto is_regular(const path &p_path, std::error_code& p_ec) noexcept -> bool
+{
+    return is_regular(status(p_path, p_ec));
+}
+
+auto is_other(file_status p_status) noexcept -> bool
+{
+    return exists(p_status) && !is_regular(p_status) && !is_directory(p_status) && !is_symlink(p_status);
+}
+
+auto is_other(const path &p_path, std::error_code& p_ec) noexcept -> bool
+{
+    return is_other(status(p_path, p_ec));
+}
+
+auto is_symlink(file_status p_status) noexcept -> bool
+{
+    return p_status.type() == file_type::symlink;
+}
+
+auto is_symlink(const path &p_path, std::error_code& p_ec) noexcept -> bool
+{
+    return is_symlink(status(p_path, p_ec));
+}
+
+auto status_known(file_status p_status) noexcept -> bool
+{
+    return p_status.type() != file_type::unknown;
 }
 } // namespace smol::filesystem

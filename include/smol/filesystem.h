@@ -98,10 +98,19 @@ private:
 auto create_directory(const path &p_path, std::error_code &p_ec) noexcept -> bool;
 auto current_path() -> path;
 auto current_path(const path &p_path, std::error_code &p_ec) -> void;
+auto exists(file_status p_status) noexcept -> bool;
+auto exists(const path &p_path, std::error_code &p_ec) noexcept -> bool;
 auto remove(const path &p_path, std::error_code &p_ec) noexcept -> bool;
 auto remove_all(const path &p_path, std::error_code &p_ec) noexcept -> std::uintmax_t;
 auto status(const path &p_path, std::error_code &p_ec) noexcept -> file_status;
 
 auto is_directory(file_status p_status) noexcept -> bool;
 auto is_directory(const path &p_path, std::error_code& p_ec) noexcept -> bool;
+auto is_regular(file_status p_status) noexcept -> bool;
+auto is_regular(const path &p_path, std::error_code& p_ec) noexcept -> bool;
+auto is_other(file_status p_status) noexcept -> bool;
+auto is_other(const path &p_path, std::error_code& p_ec) noexcept -> bool;
+auto is_symlink(file_status p_status) noexcept -> bool;
+auto is_symlink(const path &p_path, std::error_code& p_ec) noexcept -> bool;
+auto status_known(file_status p_status) noexcept -> bool;
 } // namespace filesystem
