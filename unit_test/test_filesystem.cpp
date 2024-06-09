@@ -29,27 +29,22 @@ TEST(filesystem, file_status)
 
     file_s.permissions(fs::perms::owner_all);
     EXPECT_EQ(fs::perms::owner_all, file_s.permissions());
-
 }
 
-TEST(filesystem, create_directories)
+TEST(filesystem, directories_and_files)
 {
     std::error_code errc;
-    ASSERT_NO_ERR(remove(fs::path{"/tmp/sandbox"}, errc), errc);
-    ASSERT_NO_ERR(create_directory(fs::path{"/tmp"}, errc), errc);
-    ASSERT_NO_ERR(create_directory(fs::path{"/tmp/sandbox"}, errc), errc);
-    ASSERT_NO_ERR(create_directory(fs::path{"/tmp/sandbox/a"}, errc), errc);
-    ASSERT_NO_ERR(remove(fs::path{"/tmp/sandbox/a"}, errc), errc);
-    ASSERT_NO_ERR(create_directory(fs::path{"/tmp/sandbox/b"}, errc), errc);
-    ASSERT_NO_ERR(create_directory(fs::path{"/tmp/sandbox/x/c"}, errc), errc);
+    ASSERT_TRUE(fs::is_directory(fs::path{"/tmp"}, errc));
+    auto num_dirs_removed = fs::remove_all(fs::path{"/tmp/sandbox"}, errc);
+    ASSERT_FALSE(errc);
+    ASSERT_NE(static_cast<uintmax_t>(-1), num_dirs_removed);
+    ASSERT_NO_ERR(fs::create_directory(fs::path{"/tmp"}, errc), errc);
+    ASSERT_NO_ERR(fs::create_directory(fs::path{"/tmp/sandbox"}, errc), errc);
+    ASSERT_NO_ERR(fs::create_directory(fs::path{"/tmp/sandbox/a"}, errc), errc);
+    ASSERT_NO_ERR(fs::remove(fs::path{"/tmp/sandbox/a"}, errc), errc);
+    ASSERT_NO_ERR(fs::create_directory(fs::path{"/tmp/sandbox/b"}, errc), errc);
+    ASSERT_NO_ERR(fs::create_directory(fs::path{"/tmp/sandbox/x/c"}, errc), errc);
 }
-
-// TEST(filesystem, file_types)
-// {
-    // std::error_code errc;
-    // EXPECT_TRUE(is_directory(fs::path{"/tmp/"}, errc));
-    // EXPECT_FALSE(is_directory(fs::path{"/tmp/"}, errc));
-// }
 
 TEST(filesystem, current_path)
 {

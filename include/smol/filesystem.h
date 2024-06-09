@@ -55,6 +55,13 @@ constexpr auto operator&(perms p_lhs, perms p_rhs) noexcept -> perms
         static_cast<std::underlying_type<perms>::type>(p_rhs));
 }
 
+constexpr auto operator&(std::underlying_type<perms>::type p_lhs, perms p_rhs) noexcept -> perms
+{
+    return static_cast<perms>(
+        p_lhs &
+        static_cast<std::underlying_type<perms>::type>(p_rhs));
+}
+
 constexpr auto operator|(perms p_lhs, perms p_rhs) noexcept -> perms
 {
     return static_cast<perms>(
@@ -91,8 +98,10 @@ private:
 auto create_directory(const path &p_path, std::error_code &p_ec) noexcept -> bool;
 auto current_path() -> path;
 auto current_path(const path &p_path, std::error_code &p_ec) -> void;
-auto remove(const path &p_path, std::error_code& p_ec) noexcept -> bool;
+auto remove(const path &p_path, std::error_code &p_ec) noexcept -> bool;
+auto remove_all(const path &p_path, std::error_code &p_ec) noexcept -> std::uintmax_t;
+auto status(const path &p_path, std::error_code &p_ec) noexcept -> file_status;
 
-auto is_directory(file_status p_status, std::error_code& p_ec) noexcept -> bool;
+auto is_directory(file_status p_status) noexcept -> bool;
 auto is_directory(const path &p_path, std::error_code& p_ec) noexcept -> bool;
 } // namespace filesystem
