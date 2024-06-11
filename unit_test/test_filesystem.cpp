@@ -2,6 +2,7 @@
 #include <system_error>
 #include "smol/filesystem.h"
 
+// NOLINTBEGIN - do-while is used in a well known pattern here
 #define ASSERT_NO_ERR(test, errc) \
 do { \
     EXPECT_TRUE(test); \
@@ -10,6 +11,7 @@ do { \
         ASSERT_FALSE(errc); \
     } \
 } while (0)
+// NOLINTEND
 
 namespace fs = smol::filesystem;
 

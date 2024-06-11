@@ -17,7 +17,7 @@ auto create_directory(const path &p_path, std::error_code &p_ec) noexcept -> boo
 
 auto current_path() -> path
 {
-    std::array<char, 80 + 1> cwd;
+    std::array<char, 80 + 1> cwd; // NOLINT - Does not need initialization
     if (getcwd(cwd.data(), cwd.size()) == nullptr)
         return {};
     return path{cwd.data()};
@@ -44,7 +44,7 @@ auto exists(const path &p_path, std::error_code &p_ec) noexcept -> bool
 
 auto remove(const path &p_path, std::error_code &p_ec) noexcept -> bool
 {
-    auto path_str = p_path.native().c_str();
+    const auto *path_str = p_path.native().c_str();
     auto is_dir = is_directory(p_path, p_ec);
     if (p_ec)
         return false;
@@ -78,14 +78,14 @@ auto remove_all(const path &p_path, std::error_code &p_ec) noexcept -> std::uint
 
 auto status(const path &p_path, std::error_code &p_ec) noexcept -> file_status
 {
-    struct stat f_stat;
+    struct stat f_stat; // NOLINT - Does not need initialization
     if (stat(p_path.native().c_str(), &f_stat) == -1) {
         p_ec = std::make_error_code(static_cast<std::errc>(errno));
         return {};
     }
     auto mode = f_stat.st_mode;
     perms prms{mode & perms::mask};
-    file_type ftype;
+    file_type ftype{file_type::unknown};
 
     if (S_ISREG(mode))
         ftype = file_type::regular;
@@ -99,8 +99,6 @@ auto status(const path &p_path, std::error_code &p_ec) noexcept -> file_status
         ftype = file_type::fifo;
     else if (S_ISSOCK(mode))
         ftype = file_type::socket;
-    else
-        ftype = file_type::unknown;
 
     // TODO: Handle error cases, where there are no permissions to get stats
 
