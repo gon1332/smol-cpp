@@ -14,6 +14,7 @@ add_executable(unit_test
   test_filesystem.cpp
   test_path.cpp
   test_string.cpp
+  test_string_view.cpp
 )
 
 target_link_libraries(
