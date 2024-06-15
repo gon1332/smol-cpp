@@ -4,7 +4,9 @@
 #include <string_view>
 #include "smol/string.h"
 
-namespace smol::filesystem
+namespace smol
+{
+namespace filesystem
 {
 class path
 {
@@ -76,4 +78,5 @@ public:
 private:
     string_type m_path;
 };
-} // namespace smol::filesystem
+} // namespace filesystem
+} // namespace smol

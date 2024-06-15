@@ -4,7 +4,9 @@
 #include <bitset>
 #include <system_error>
 
-namespace smol::filesystem
+namespace smol
+{
+namespace filesystem
 {
 enum class file_type
 {
@@ -114,3 +116,4 @@ auto is_symlink(file_status p_status) noexcept -> bool;
 auto is_symlink(const path &p_path, std::error_code& p_ec) noexcept -> bool;
 auto status_known(file_status p_status) noexcept -> bool;
 } // namespace filesystem
+} // namespace smol

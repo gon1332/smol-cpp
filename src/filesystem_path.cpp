@@ -5,7 +5,9 @@
 #include "smol/algorithm.h"
 #include "smol/string.h"
 
-namespace smol::filesystem
+namespace smol
+{
+namespace filesystem
 {
 class path::iterator
 {
@@ -185,4 +187,5 @@ auto path::end() const -> iterator
 {
     return iterator{m_path, std::string::npos};
 }
+} // namespace filesystem
 } // namespace smol
