@@ -3,7 +3,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-namespace smol::filesystem
+namespace smol
+{
+namespace filesystem
 {
 auto create_directory(const path &p_path, std::error_code &p_ec) noexcept -> bool
 {
@@ -150,4 +152,5 @@ auto status_known(file_status p_status) noexcept -> bool
 {
     return p_status.type() != file_type::unknown;
 }
-} // namespace smol::filesystem
+} // namespace filesystem
+} // namespace smol

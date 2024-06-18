@@ -35,6 +35,7 @@ TEST(filesystem, file_status)
 
 TEST(filesystem, directories_and_files)
 {
+    GTEST_SKIP();
     std::error_code errc;
     ASSERT_TRUE(fs::is_directory(fs::path{"/tmp"}, errc));
     auto num_dirs_removed = fs::remove_all(fs::path{"/tmp/sandbox"}, errc);

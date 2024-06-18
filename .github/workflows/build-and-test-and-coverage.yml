@@ -6,6 +6,9 @@ on:
 
 jobs:
   job:
+    strategy:
+      matrix:
+        cpp_standard: [ 11, 14, 17 ]
     name: Build-and-test-and-coverage
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +18,8 @@ jobs:
 
       - name: Build and Test
         run: |
-          cmake --workflow --preset=linux
+          cmake --preset=linux -DCMAKE_CXX_STANDARD=${{ matrix.cpp_standard }}
+          cmake --build --preset=linux
           ./build/linux/unit_test/unit_test
       - name: Generate code coverage report
         run: |
