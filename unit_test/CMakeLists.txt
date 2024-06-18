@@ -15,10 +15,16 @@ add_executable(unit_test
   test_path.cpp
   test_string.cpp
 )
+
 target_link_libraries(
   unit_test
   smol
   GTest::gtest_main
+)
+
+set_target_properties(unit_test PROPERTIES
+  CXX_STANDARD 17
+  CXX_EXTENSIONS OFF
 )
 
 include(GoogleTest)
