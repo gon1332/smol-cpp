@@ -1,7 +1,6 @@
 #include "smol/filesystem.h"
 #include <algorithm>
 #include <iterator>
-#include <string_view>
 #include "smol/algorithm.h"
 #include "smol/string.h"
 
@@ -99,7 +98,7 @@ auto path::operator+=(const string_type &p_str) -> path &
     return *this;
 }
 
-auto path::operator+=(std::string_view p_str) -> path &
+auto path::operator+=(STD_OR_SMOL::string_view p_str) -> path &
 {
     m_path += string_type{p_str.begin(), p_str.end()};
     return *this;
@@ -113,7 +112,7 @@ auto path::operator+=(const value_type *p_str) -> path &
 
 auto path::operator+=(value_type p_val) -> path &
 {
-    return *this += std::string_view(&p_val, 1);
+    return *this += STD_OR_SMOL::string_view(&p_val, 1);
 }
 
 auto path::native() const noexcept -> const string_type & { return m_path; }

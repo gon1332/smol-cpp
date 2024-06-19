@@ -1,7 +1,15 @@
 #include <gtest/gtest.h>
 #include <sstream>
-#include <string_view>
 #include "smol/string.h"
+
+#if defined(USE_STD_STRING_VIEW)
+#include <string_view>
+#define STD_OR_SMOL std
+#else
+#include "smol/string_view.h"
+#define STD_OR_SMOL smol
+#endif
+
 
 TEST(string, create)
 {
@@ -42,7 +50,7 @@ TEST(string, create)
         EXPECT_STREQ("abc", str.c_str());
     }
     {
-        std::string_view str_v{"abcde"};
+        STD_OR_SMOL::string_view str_v{"abcde"};
         smol::string<3> str{str_v.begin(), str_v.end()};
         EXPECT_FALSE(str.empty());
         EXPECT_EQ(3, str.length());
@@ -121,7 +129,7 @@ TEST(string, compare)
 {
     smol::string<5> str1{"abc"};
     smol::string<6> str2{"abc"};
-    std::string_view sview{"abc"};
+    STD_OR_SMOL::string_view sview{"abc"};
     EXPECT_EQ(str1, str2);
     EXPECT_EQ(str2, str1);
     EXPECT_EQ(str1, "abc");
@@ -134,10 +142,10 @@ TEST(string, compare)
     EXPECT_NE(str3, str1);
     EXPECT_NE(str1, "ab");
     EXPECT_NE("ab", str1);
-    std::string_view sview2{"a"}; // different length
+    STD_OR_SMOL::string_view sview2{"a"}; // different length
     EXPECT_NE(str1, sview2);
     EXPECT_NE(sview2, str1);
-    std::string_view sview3{"ac"}; // same length
+    STD_OR_SMOL::string_view sview3{"ac"}; // same length
     EXPECT_NE(str1, sview3);
     EXPECT_NE(sview3, str1);
 }

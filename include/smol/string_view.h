@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iterator>
+#include <ostream>
 
 namespace smol
 {
@@ -42,39 +43,38 @@ public:
     [[nodiscard]] auto length() const noexcept -> size_type { return size(); }
     [[nodiscard]] auto empty() const noexcept -> bool { return size() == 0U; }
 
+    friend auto operator==(string_view p_lhs, string_view p_rhs) noexcept -> bool
+    {
+        if (p_lhs.length() != p_rhs.length()) {
+            return false;
+        }
+        const auto *it_l = p_lhs.cbegin();
+        const auto *it_r = p_rhs.cbegin();
+        const auto *end_l = p_lhs.cend();
+        const auto *end_r = p_rhs.cend();
+        for (; it_l != end_l && it_r != end_r; std::advance(it_l, 1), std::advance(it_r, 1)) {
+            if (*it_l != *it_r) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    friend auto operator!=(string_view p_lhs, string_view p_rhs) noexcept -> bool
+    {
+        return !(p_lhs == p_rhs);
+    }
+
+    friend auto operator<<(std::ostream &p_os, string_view p_v) -> std::ostream &
+    {
+        for (const auto &item : p_v) {
+            p_os << item;
+        }
+        return p_os;
+    }
+
 private:
     const_pointer m_string{nullptr};
     size_type m_length{0U};
 };
-
-auto operator==(string_view p_lhs, string_view p_rhs) noexcept -> bool
-{
-    if (p_lhs.length() != p_rhs.length()) {
-        return false;
-    }
-    const auto *it_l = p_lhs.cbegin();
-    const auto *it_r = p_rhs.cbegin();
-    const auto *end_l = p_lhs.cend();
-    const auto *end_r = p_rhs.cend();
-    for (; it_l != end_l && it_r != end_r; std::advance(it_l, 1), std::advance(it_r, 1)) {
-        if (*it_l != *it_r) {
-            return false;
-        }
-    }
-    return true;
-}
-
-auto operator!=(string_view p_lhs, string_view p_rhs) noexcept -> bool
-{
-    return !(p_lhs == p_rhs);
-}
-
-template <class OStream>
-auto operator<<(OStream &p_os, const string_view &p_v) -> OStream &
-{
-    for (const auto &item : p_v) {
-        p_os << item;
-    }
-    return p_os;
-}
 } // namespace smol
