@@ -1,14 +1,7 @@
 #include <gtest/gtest.h>
 #include <sstream>
+#include "smol/smol.h"
 #include "smol/filesystem.h"
-
-#if defined(USE_STD_STRING_VIEW)
-#include <string_view>
-#define STD_OR_SMOL std
-#else
-#include "smol/string_view.h"
-#define STD_OR_SMOL smol
-#endif
 
 namespace fs = smol::filesystem;
 

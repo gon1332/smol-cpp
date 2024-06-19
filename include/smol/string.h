@@ -3,14 +3,7 @@
 #include <cstdint>
 #include <array>
 #include <iterator>
-
-#if defined(USE_STD_STRING_VIEW)
-#include <string_view>
-#define STD_OR_SMOL std
-#else
-#include "smol/string_view.h"
-#define STD_OR_SMOL smol
-#endif
+#include "smol/smol.h"
 
 namespace smol
 {

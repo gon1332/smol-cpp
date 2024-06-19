@@ -8,6 +8,8 @@ namespace smol
 {
 namespace filesystem
 {
+constexpr path::value_type path::preferred_separator;
+
 class path::iterator
 {
 public:

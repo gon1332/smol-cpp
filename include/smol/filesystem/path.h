@@ -1,15 +1,8 @@
 #pragma once
 
 #include <iterator>
+#include "smol/smol.h"
 #include "smol/string.h"
-
-#if defined(USE_STD_STRING_VIEW)
-#include <string_view>
-#define STD_OR_SMOL std
-#else
-#include "smol/string_view.h"
-#define STD_OR_SMOL smol
-#endif
 
 namespace smol
 {
@@ -23,7 +16,7 @@ public:
     using value_type = char;
     using string_type = smol::string<40>;
 
-    static constexpr value_type preferred_separator{'/'};
+    static constexpr value_type preferred_separator = '/';
 
     path() noexcept = default;
     explicit path(string_type &&p_str);

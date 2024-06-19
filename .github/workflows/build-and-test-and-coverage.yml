@@ -18,10 +18,10 @@ jobs:
 
       - name: Build and Test
         run: |
-          cmake --preset=linux -DCMAKE_CXX_STANDARD=${{ matrix.cpp_standard }}
+          cmake --preset=linux -DSMOL_CXX_STANDARD=${{ matrix.cpp_standard }}
           cmake --build --preset=linux
           ./build/linux/unit_test/unit_test
       - name: Generate code coverage report
         run: |
           sudo apt-get install -y llvm
-          ./scripts/generate_coverage_report.sh
+          ./scripts/generate_coverage_report.sh ${{ matrix.cpp_standard }}
