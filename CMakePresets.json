@@ -38,7 +38,7 @@
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "/usr/bin/clang",
                 "CMAKE_CXX_COMPILER": "/bin/clang++",
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_BUILD_TYPE": "MinSizeRel"
             }
         }
     ],
