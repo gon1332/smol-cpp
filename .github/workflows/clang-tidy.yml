@@ -11,12 +11,14 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
 
-    - uses: seanmiddleditch/gha-setup-ninja@master
+      - uses: seanmiddleditch/gha-setup-ninja@master
 
-    - name: Configure CMake
-      run: cmake --preset=linux
+      - name: Configure CMake
+        run: cmake --preset=linux
 
-    - name: Run linter checks
-      run: clang-tidy -p build/linux --format-style='file' unit_test/*.cpp
+      - name: Run linter checks
+        run: clang-tidy -p build/linux --format-style='file' unit_test/*.cpp
