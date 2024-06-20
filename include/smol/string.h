@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <array>
 #include <iterator>
-#include <string_view>
+#include "smol/smol.h"
 
 namespace smol
 {
@@ -22,7 +22,7 @@ public:
     explicit string(const value_type *p_str) { copy(p_str); }
 
     template <class Source>
-    explicit string(const Source &p_source) { copy(std::string_view{p_source}); }
+    explicit string(const Source &p_source) { copy(STD_OR_SMOL::string_view{p_source}); }
 
     template <class InputIt>
     string(InputIt p_first, InputIt p_last) { copy(p_first, p_last); }
@@ -136,7 +136,7 @@ private:
         nulify(m_length);
     }
 
-    auto copy(std::string_view p_sv) -> void
+    auto copy(STD_OR_SMOL::string_view p_sv) -> void
     {
         copy(p_sv.begin(), p_sv.end());
     }
@@ -162,7 +162,7 @@ auto operator!=(const string<SizeL> &p_lhs,
 template <std::size_t Size>
 auto operator==(const string<Size> &p_lhs, const char *p_rhs) -> bool
 {
-    return std::string_view{p_lhs.c_str()} == std::string_view{p_rhs};
+    return STD_OR_SMOL::string_view{p_lhs.c_str()} == STD_OR_SMOL::string_view{p_rhs};
 }
 
 template <std::size_t Size>
@@ -184,7 +184,7 @@ auto operator!=(const char *p_lhs, const string<Size> &p_rhs) -> bool
 }
 
 template <std::size_t Size>
-auto operator==(const string<Size> &p_lhs, const std::string_view &p_rhs) -> bool
+auto operator==(const string<Size> &p_lhs, const STD_OR_SMOL::string_view &p_rhs) -> bool
 {
     if (p_lhs.length() != p_rhs.length()) {
         return false;
@@ -202,19 +202,19 @@ auto operator==(const string<Size> &p_lhs, const std::string_view &p_rhs) -> boo
 }
 
 template <std::size_t Size>
-auto operator==(const std::string_view &p_lhs, const string<Size> p_rhs) -> bool
+auto operator==(const STD_OR_SMOL::string_view &p_lhs, const string<Size> p_rhs) -> bool
 {
     return p_rhs == p_lhs;
 }
 
 template <std::size_t Size>
-auto operator!=(const string<Size> &p_lhs, const std::string_view &p_rhs) -> bool
+auto operator!=(const string<Size> &p_lhs, const STD_OR_SMOL::string_view &p_rhs) -> bool
 {
     return !(p_lhs == p_rhs);
 }
 
 template <std::size_t Size>
-auto operator!=(const std::string_view &p_lhs, const string<Size> &p_rhs) -> bool
+auto operator!=(const STD_OR_SMOL::string_view &p_lhs, const string<Size> &p_rhs) -> bool
 {
     return p_rhs != p_lhs;
 }
@@ -222,7 +222,7 @@ auto operator!=(const std::string_view &p_lhs, const string<Size> &p_rhs) -> boo
 template <class OStream, std::size_t Size>
 auto operator<<(OStream &p_os, const string<Size> &p_str) -> OStream &
 {
-    p_os << std::string_view{p_str.c_str()};
+    p_os << p_str.c_str();
     return p_os;
 }
 } // namespace smol

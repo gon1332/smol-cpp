@@ -14,6 +14,14 @@ add_executable(unit_test
   test_filesystem.cpp
   test_path.cpp
   test_string.cpp
+  test_string_view.cpp
+)
+
+target_compile_features(unit_test PRIVATE cxx_std_17)
+
+target_compile_definitions(unit_test PRIVATE
+  $<$<EQUAL:${SMOL_CXX_STANDARD},11>:USE_SMOL_STRING_VIEW>
+  $<$<EQUAL:${SMOL_CXX_STANDARD},14>:USE_SMOL_STRING_VIEW>
 )
 
 target_link_libraries(
@@ -22,10 +30,7 @@ target_link_libraries(
   GTest::gtest_main
 )
 
-set_target_properties(unit_test PROPERTIES
-  CXX_STANDARD 17
-  CXX_EXTENSIONS OFF
-)
+set_target_properties(unit_test PROPERTIES CXX_EXTENSIONS OFF)
 
 include(GoogleTest)
 gtest_discover_tests(unit_test)

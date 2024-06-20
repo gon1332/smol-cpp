@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <sstream>
+#include "smol/smol.h"
 #include "smol/filesystem.h"
 
 namespace fs = smol::filesystem;
@@ -63,7 +64,7 @@ TEST(path, create)
         EXPECT_EQ(path, fs::path("/mnt"));
     }
     {
-        std::string_view path_view{"/mnt"};
+        STD_OR_SMOL::string_view path_view{"/mnt"};
         fs::path path{path_view.begin(), path_view.end()};
         EXPECT_FALSE(path.empty());
         EXPECT_TRUE(path.has_filename());
@@ -130,7 +131,7 @@ TEST(path, concat)
     EXPECT_EQ(path, fs::path("//a"));
     path += fs::path::string_type("b");
     EXPECT_EQ(path, fs::path("//ab"));
-    path += std::string_view("/");
+    path += STD_OR_SMOL::string_view("/");
     EXPECT_EQ(path, fs::path("//ab/"));
     path += 'c';
     EXPECT_EQ(path, fs::path("//ab/c"));

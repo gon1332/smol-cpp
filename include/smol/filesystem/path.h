@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iterator>
-#include <string_view>
+#include "smol/smol.h"
 #include "smol/string.h"
 
 namespace smol
@@ -16,7 +16,7 @@ public:
     using value_type = char;
     using string_type = smol::string<40>;
 
-    static constexpr value_type preferred_separator{'/'};
+    static constexpr value_type preferred_separator = '/';
 
     path() noexcept = default;
     explicit path(string_type &&p_str);
@@ -35,7 +35,7 @@ public:
 
     auto operator+=(const path &p_path) -> path &;
     auto operator+=(const string_type &p_str) -> path &;
-    auto operator+=(std::string_view p_str) -> path &;
+    auto operator+=(STD_OR_SMOL::string_view p_str) -> path &;
     auto operator+=(const value_type *p_str) -> path &;
     auto operator+=(value_type p_val) -> path &;
 

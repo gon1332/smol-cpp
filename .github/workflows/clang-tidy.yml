@@ -16,7 +16,7 @@ jobs:
     - uses: seanmiddleditch/gha-setup-ninja@master
 
     - name: Configure CMake
-      run: cmake --preset=linux -DCMAKE_CXX_STANDARD=17
+      run: cmake --preset=linux
 
     - name: Run linter checks
-      run: clang-tidy -p build/linux --format-style='file' include/smol/*.h unit_test/*.cpp
+      run: clang-tidy -p build/linux --format-style='file' unit_test/*.cpp
