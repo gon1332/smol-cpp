@@ -14,7 +14,7 @@ public:
     class iterator;
 
     using value_type = char;
-    using string_type = smol::string<40>;
+    using string_type = smol::string<50>;
 
     static constexpr value_type preferred_separator = '/';
 

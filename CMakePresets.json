@@ -29,6 +29,17 @@
                 "CMAKE_CXX_FLAGS": "-fprofile-instr-generate -fcoverage-mapping",
                 "CMAKE_BUILD_TYPE": "Release"
             }
+        },
+        {
+            "name": "benchmark",
+            "displayName": "Build for GNU+Linux using clang",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "/usr/bin/clang",
+                "CMAKE_CXX_COMPILER": "/bin/clang++",
+                "CMAKE_BUILD_TYPE": "Release"
+            }
         }
     ],
     "buildPresets": [
@@ -39,34 +50,11 @@
         {
             "name": "coverage",
             "configurePreset": "coverage"
-        }
-    ],
-    "workflowPresets": [
-        {
-            "name": "linux",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "linux"
-                },
-                {
-                    "type": "build",
-                    "name": "linux"
-                }
-            ]
         },
         {
-            "name": "coverage",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "coverage"
-                },
-                {
-                    "type": "build",
-                    "name": "coverage"
-                }
-            ]
+            "name": "benchmark",
+            "configurePreset": "benchmark",
+            "targets": "smol_bench"
         }
     ]
 }

@@ -22,3 +22,4 @@ set_target_properties(smol PROPERTIES CXX_EXTENSIONS OFF)
 
 add_subdirectory(port)
 add_subdirectory(unit_test)
+add_subdirectory(benchmarks EXCLUDE_FROM_ALL)
