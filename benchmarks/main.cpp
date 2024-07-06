@@ -14,9 +14,9 @@ static void BM_Path_LexicallyNormal(benchmark::State &p_state, const char *p_pat
 const char *kAlreadyNormalizedPath = "/one/today/is/worth/two/tomorrow";
 const char *kNotNormalizedPath = "/././one//../today/../is//worth/two/../tomorrow/";
 
-BENCHMARK_TEMPLATE1_CAPTURE(BM_Path_LexicallyNormal, smol::filesystem::path, already_normalized, kAlreadyNormalizedPath)->Complexity();
-BENCHMARK_TEMPLATE1_CAPTURE(BM_Path_LexicallyNormal, std::filesystem::path, already_normalized, kAlreadyNormalizedPath)->Complexity();
-BENCHMARK_TEMPLATE1_CAPTURE(BM_Path_LexicallyNormal, smol::filesystem::path, not_normalized, kNotNormalizedPath)->Complexity();
-BENCHMARK_TEMPLATE1_CAPTURE(BM_Path_LexicallyNormal, std::filesystem::path, not_normalized, kNotNormalizedPath)->Complexity();
+BENCHMARK_TEMPLATE1_CAPTURE(BM_Path_LexicallyNormal, smol::filesystem::path, already_normalized, kAlreadyNormalizedPath);
+BENCHMARK_TEMPLATE1_CAPTURE(BM_Path_LexicallyNormal, std::filesystem::path, already_normalized, kAlreadyNormalizedPath);
+BENCHMARK_TEMPLATE1_CAPTURE(BM_Path_LexicallyNormal, smol::filesystem::path, not_normalized, kNotNormalizedPath);
+BENCHMARK_TEMPLATE1_CAPTURE(BM_Path_LexicallyNormal, std::filesystem::path, not_normalized, kNotNormalizedPath);
 
 BENCHMARK_MAIN();
